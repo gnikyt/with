@@ -16,5 +16,5 @@
     "autoload": {
         "psr-0": { "TylerKing\\With": "src" },
         "files": ["src/TylerKing/With/With.php"]
-    },
+    }
 }
