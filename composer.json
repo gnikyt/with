@@ -13,8 +13,11 @@
     "require": {
         "php": ">=5.4.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
     "autoload": {
-        "psr-0": { "TylerKing\\With": "src" },
-        "files": ["src/TylerKing/With/With.php"]
-    }
+        "files": ["src/TylerKing/With.php"]
+    },
+    "config": { "bin-dir": "bin" }
 }

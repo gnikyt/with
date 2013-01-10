@@ -2,8 +2,6 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-use TylerKing\With;
-
 /**
 * In this example, with() will call Install()'s __enter method, which setups the PDO instance.
 * The PDO instance is then returned, where with() injects it into the callable function.
@@ -60,7 +58,7 @@ class Install
 }
 
 $test = new Install(['user' => 'root', 'pass' => 'root', 'db' => 'test']);
-With\with($test, function($pdo) {
+TylerKing\with($test, function($pdo) {
     $pdo->beginTransaction();
 
     $id  = 2;
