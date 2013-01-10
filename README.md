@@ -11,7 +11,6 @@ Just create a composer.json file for your project:
 
 ```JSON
 {
-    "minimum-stability" : "dev",
     "require": {
         "tyler-king/with": "dev-master"
     }
