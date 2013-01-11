@@ -64,7 +64,8 @@ class WithTest extends \PHPUnit_Framework_TestCase
         $withObj->expects($this->once())
                 ->method('__enter');
         $withObj->expects($this->once())
-                ->method('__exit');
+                ->method('__exit')
+                ->will($this->returnValue(true));
 
         with($withObj, $callableMock);
    }
@@ -85,6 +86,9 @@ class WithTest extends \PHPUnit_Framework_TestCase
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
+        $withObj->expects($this->once())
+                ->method('__exit')
+                ->will($this->returnValue(true));
 
         with($withObj, $callableMock);
     }
@@ -107,7 +111,8 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(42));
         $withObj->expects($this->once())
                 ->method('__exit')
-                ->with(42, null);
+                ->with(42, null)
+                ->will($this->returnValue(true));
 
         with($withObj, $callableMock); 
     }
@@ -135,7 +140,8 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(42));
         $withObj->expects($this->once())
                 ->method('__exit')
-                ->with(42, $e);
+                ->with(42, $e)
+                ->will($this->returnValue(false));
 
         with($withObj, $callableMock); 
     }
@@ -146,6 +152,60 @@ class WithTest extends \PHPUnit_Framework_TestCase
      * This will test to make sure the exception will NOT be re-thrown if __exit() returns as true.
      */
     function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionAndSurpress()
+    {
+        $e = new \Exception;
+
+        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock->expects($this->once())
+                     ->method('__invoke')
+                     ->with(42)
+                     ->will($this->throwException($e));
+
+        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj->expects($this->once())
+                ->method('__enter')
+                ->will($this->returnValue(42));
+        $withObj->expects($this->once())
+                ->method('__exit')
+                ->with(42, $e)
+                ->will($this->returnValue(true));
+
+        with($withObj, $callableMock); 
+    }
+
+    /**
+     * @test
+     * @expectedException Exception
+     * @expectedExceptionMessage __exit() method must return a boolean.
+     *
+     * This will test to make sure a boolean is returned from __exit() method.
+     */
+    function itShouldCheckForBooleanTypeReturnedFromExitAndThrowException()
+    {
+        $e = new \Exception;
+
+        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock->expects($this->once())
+                     ->method('__invoke')
+                     ->with(42)
+                     ->will($this->throwException($e));
+
+        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj->expects($this->once())
+                ->method('__enter')
+                ->will($this->returnValue(42));
+        $withObj->expects($this->once())
+                ->method('__exit')
+                ->with(42, $e)
+                ->will($this->returnValue(null));
+
+        with($withObj, $callableMock); 
+    }
+
+    /**
+     * @test
+     */
+    function completeTest()
     {
         $e = new \Exception;
 

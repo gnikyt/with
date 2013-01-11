@@ -26,7 +26,11 @@ function with($object, callable $callable) {
     }
     $exit_value = $object->__exit($enter_value, $exception);
 
-    if (! $exit_value && null != $exception) {
+    if (! is_bool($exit_value)) {
+        throw new Exception(sprintf('Class "%s": __exit() method must return a boolean.', get_class($object)));
+    }
+
+    if (false === $exit_value && null !== $exception) {
         throw $exception;
     }
 
