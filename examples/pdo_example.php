@@ -54,6 +54,9 @@ class Install
 
             $object->commit();
         }
+
+        // surpresses any exceptions.
+        return true;
     }
 }
 
