@@ -8,6 +8,8 @@ class WithTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException Exception
      * @expectedExceptionMessage "something" must be a callable object.
+     *
+     * This will test to make sure arg1 of with() is callable.
      */
     function itShouldRejectForNoObject()
     {
@@ -21,6 +23,8 @@ class WithTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException Exception
      * @expectedExceptionMessage Class "stdClass" must have a public __enter() method.
+     *
+     * This will test to make sure arg1 of with() has a public __enter() method.
      */
     function itShouldRejectObjectsWithoutEnterMethod()
     {
@@ -34,6 +38,8 @@ class WithTest extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException Exception
      * @expectedExceptionMessage Class "TylerKing\EnterableStub" must have a public __exit() method.
+     *
+     * This will test to make sure arg1 of with() has a public __exit() method.
      */
     function itShouldRejectObjectsWithoutExitMethod()
     {
@@ -45,6 +51,8 @@ class WithTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
+     * This will test to make sure with() successfully runs on a object having __enter() and __exit().
      */
     function itShouldCallHookableMethods()
     {
@@ -63,6 +71,8 @@ class WithTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
+     * This will test to ensure __enter() passes its return to the callable.
      */
     function itShouldPassEnterReturnValueToCallable()
     {
@@ -81,6 +91,8 @@ class WithTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
+     * This will test to ensure __exit() gets a return value from __enter() via the callable.
      */
     function itShouldPassExitGetReturnValueFromEnter()
     {
@@ -102,8 +114,38 @@ class WithTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @expectedException Exception
+     * @expectedExceptionMessage __exit() did not surpress me.
+     *
+     * This will test to make sure the exception will be re-thrown if __exit() returns as false.
      */
-    function itShouldPassExitGetReturnValueFromEnterAndMakeException()
+    function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionNotSurpressed()
+    {
+        $e = new \Exception('__exit() did not surpress me.');
+
+        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock->expects($this->once())
+                     ->method('__invoke')
+                     ->with(42)
+                     ->will($this->throwException($e));
+
+        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj->expects($this->once())
+                ->method('__enter')
+                ->will($this->returnValue(42));
+        $withObj->expects($this->once())
+                ->method('__exit')
+                ->with(42, $e);
+
+        with($withObj, $callableMock); 
+    }
+
+    /**
+     * @test
+     *
+     * This will test to make sure the exception will NOT be re-thrown if __exit() returns as true.
+     */
+    function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionAndSurpress()
     {
         $e = new \Exception;
 
@@ -119,7 +161,8 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(42));
         $withObj->expects($this->once())
                 ->method('__exit')
-                ->with(42, $e);
+                ->with(42, $e)
+                ->will($this->returnValue(true));
 
         with($withObj, $callableMock); 
     }

@@ -17,14 +17,18 @@ function with($object, callable $callable) {
         throw new Exception(sprintf('Class "%s" must have a public __exit() method.', get_class($object)));
     }
 
-    $return = call_user_func([$object, '__enter']);
-    $error  = null;
+    $exception   = null;
+    $enter_value = $object->__enter();
     try {
-        call_user_func_array($callable, [$return]);
+        $callable($enter_value);
     } catch(Exception $e) {
-        $error = $e;
+        $exception = $e;
     }
-    call_user_func_array([$object, '__exit'], [$return, $error]);
+    $exit_value = $object->__exit($enter_value, $exception);
+
+    if (! $exit_value && null != $exception) {
+        throw $exception;
+    }
 
     return $object;
 }
