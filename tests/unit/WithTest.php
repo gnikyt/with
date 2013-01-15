@@ -124,7 +124,7 @@ class WithTest extends \PHPUnit_Framework_TestCase
      *
      * This will test to make sure the exception will be re-thrown if __exit() returns as false.
      */
-    function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionNotSurpressed()
+    function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionNotSuppressed()
     {
         $e = new \Exception('__exit() did not surpress me.');
 
@@ -151,7 +151,7 @@ class WithTest extends \PHPUnit_Framework_TestCase
      *
      * This will test to make sure the exception will NOT be re-thrown if __exit() returns as true.
      */
-    function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionAndSurpress()
+    function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionAndSuppress()
     {
         $e = new \Exception;
 
@@ -198,6 +198,60 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->method('__exit')
                 ->with(42, $e)
                 ->will($this->returnValue(null));
+
+        with($withObj, $callableMock); 
+    }
+
+    /**
+     * @test
+     *
+     * This will test to ensure __enter() will throw an exception, skip the callable
+     * but still call __exit() and pass that exception to it.
+     */
+    function itShouldExceptionOnEnterAndSkipCallableButStillRunExit()
+    {
+        $e = new \Exception;
+
+        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock->expects($this->never())
+                     ->method('__invoke');
+
+        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj->expects($this->once())
+                ->method('__enter')
+                ->will($this->throwException($e));
+        $withObj->expects($this->once())
+                ->method('__exit')
+                ->with(null, $e)
+                ->will($this->returnValue(true));
+
+        with($withObj, $callableMock); 
+    }
+
+
+    /**
+     * @test
+     * @expectedException Exception
+     *
+     * This will test to ensure __enter() will throw an exception, skip the callable
+     * but still call __exit() and pass that exception to it + rethrow it.
+     */
+    function itShouldExceptionOnEnterAndSkipCallableButStillRunExitAndReThrow()
+    {
+        $e = new \Exception;
+
+        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock->expects($this->never())
+                     ->method('__invoke');
+
+        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj->expects($this->once())
+                ->method('__enter')
+                ->will($this->throwException($e));
+        $withObj->expects($this->once())
+                ->method('__exit')
+                ->with(null, $e)
+                ->will($this->returnValue(false));
 
         with($withObj, $callableMock); 
     }

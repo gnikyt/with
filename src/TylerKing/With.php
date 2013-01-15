@@ -18,12 +18,22 @@ function with($object, callable $callable) {
     }
 
     $exception   = null;
-    $enter_value = $object->__enter();
+    $enter_value = null;
+
     try {
-        $callable($enter_value);
+        $enter_value = $object->__enter();
     } catch(Exception $e) {
         $exception = $e;
     }
+
+    if (null === $exception) {
+        try {
+            $callable($enter_value);
+        } catch(Exception $e) {
+            $exception = $e;
+        }
+    }
+
     $exit_value = $object->__exit($enter_value, $exception);
 
     if (! is_bool($exit_value)) {
