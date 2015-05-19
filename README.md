@@ -79,10 +79,10 @@ class Foo
 
 $foo = new Foo;
 TylerKing\with($foo, function($db) {
-    $pdo->beginTransaction();
+    $db->beginTransaction();
 
     $foo = 'tyler-king';
-    $sql = $pdo->prepare("INSERT INTO non_existant_table SET name = :foo");
+    $sql = $db->prepare("INSERT INTO non_existant_table SET name = :foo");
     $sql->bindParam('foo', $foo, PDO::PARAM_STR);
     $sql->execute();
 });
