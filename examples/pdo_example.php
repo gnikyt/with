@@ -61,7 +61,7 @@ class Install
 }
 
 $test = new Install(['user' => 'root', 'pass' => 'root', 'db' => 'test']);
-TylerKing\with($test, function($pdo) {
+OhMyBrew\with($test, function($pdo) {
     $pdo->beginTransaction();
 
     $id  = 2;

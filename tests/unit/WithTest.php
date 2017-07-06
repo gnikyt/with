@@ -1,6 +1,4 @@
-<?php
-
-namespace TylerKing;
+<?php namespace OhMyBrew;
 
 class WithTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,7 +35,7 @@ class WithTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException Exception
-     * @expectedExceptionMessage Class "TylerKing\EnterableStub" must have a public __exit() method.
+     * @expectedExceptionMessage Class "OhMyBrew\EnterableStub" must have a public __exit() method.
      *
      * This will test to make sure arg1 of with() has a public __exit() method.
      */
@@ -56,11 +54,11 @@ class WithTest extends \PHPUnit_Framework_TestCase
      */
     function itShouldCallHookableMethods()
     {
-        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock = $this->getMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke');
 
-        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter');
         $withObj->expects($this->once())
@@ -77,12 +75,12 @@ class WithTest extends \PHPUnit_Framework_TestCase
      */
     function itShouldPassEnterReturnValueToCallable()
     {
-        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock = $this->getMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42);
 
-        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -100,12 +98,12 @@ class WithTest extends \PHPUnit_Framework_TestCase
      */
     function itShouldPassExitGetReturnValueFromEnter()
     {
-        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock = $this->getMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42);
 
-        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -128,13 +126,13 @@ class WithTest extends \PHPUnit_Framework_TestCase
     {
         $e = new \Exception('__exit() did not surpress me.');
 
-        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock = $this->getMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -155,13 +153,13 @@ class WithTest extends \PHPUnit_Framework_TestCase
     {
         $e = new \Exception;
 
-        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock = $this->getMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -184,13 +182,13 @@ class WithTest extends \PHPUnit_Framework_TestCase
     {
         $e = new \Exception;
 
-        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock = $this->getMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -212,11 +210,11 @@ class WithTest extends \PHPUnit_Framework_TestCase
     {
         $e = new \Exception;
 
-        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock = $this->getMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->never())
                      ->method('__invoke');
 
-        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->throwException($e));
@@ -240,11 +238,11 @@ class WithTest extends \PHPUnit_Framework_TestCase
     {
         $e = new \Exception;
 
-        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock = $this->getMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->never())
                      ->method('__invoke');
 
-        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->throwException($e));
@@ -263,13 +261,13 @@ class WithTest extends \PHPUnit_Framework_TestCase
     {
         $e = new \Exception;
 
-        $callableMock = $this->getMock('TylerKing\CallableStub');
+        $callableMock = $this->getMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->getMock('TylerKing\WithObjectStub');
+        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));

@@ -11,6 +11,10 @@
          syntaxCheck="false"
          bootstrap="vendor/autoload.php"
 >
+    <logging>
+        <log type="coverage-clover" target="coverage/clover.xml"/>
+    </logging>
+
     <testsuites>
         <testsuite name="With Test Suite">
             <directory>./tests/</directory>

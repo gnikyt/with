@@ -1,23 +1,22 @@
-<?php
-
-namespace TylerKing;
+<?php namespace OhMyBrew;
 
 use Exception;
 
-function with($object, callable $callable) {
-    if (! is_object($object)) {
+function with($object, callable $callable)
+{
+    if (!is_object($object)) {
         throw new Exception(sprintf('"%s" must be a callable object.', $object));
     }
 
-    if (! method_exists($object, '__enter') || ! is_callable([$object, '__enter'])) {
+    if (!method_exists($object, '__enter') || !is_callable([$object, '__enter'])) {
         throw new Exception(sprintf('Class "%s" must have a public __enter() method.', get_class($object)));
     }
 
-    if (! method_exists($object, '__exit') || ! is_callable([$object, '__exit'])) {
+    if (!method_exists($object, '__exit') || !is_callable([$object, '__exit'])) {
         throw new Exception(sprintf('Class "%s" must have a public __exit() method.', get_class($object)));
     }
 
-    $exception   = null;
+    $exception = null;
     $enter_value = null;
 
     try {
@@ -36,7 +35,7 @@ function with($object, callable $callable) {
 
     $exit_value = $object->__exit($enter_value, $exception);
 
-    if (! is_bool($exit_value)) {
+    if (!is_bool($exit_value)) {
         throw new Exception(sprintf('Class "%s": __exit() method must return a boolean.', get_class($object)));
     }
 

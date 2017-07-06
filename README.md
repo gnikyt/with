@@ -3,26 +3,15 @@
 This function simply mocks Python's [with statement](http://docs.python.org/release/2.5.3/ref/with.html) for PHP. 
 There is probably very little use-case for this but I thought I throw it out there.
 
-[![Build Status](https://secure.travis-ci.org/tyler-king/with.png?branch=master)](http://travis-ci.org/tyler-king/with)
+[![Build Status](https://secure.travis-ci.org/ohmybrew/with.png?branch=master)](http://travis-ci.org/ohmybrew/with)
+[![Coverage Status](https://coveralls.io/repos/github/ohmybrew/with/badge.svg?branch=master)](https://coveralls.io/github/ohmybrew/with?branch=master)
+[![License](https://poser.pugx.org/ohmybrew/with/license)](https://packagist.org/packages/ohmybrew/with)
 
-## Fetch
+## Installation
 
 The recommended way to install is [through composer](http://packagist.org).
 
-Just create a composer.json file for your project:
-
-```JSON
-{
-    "require": {
-        "tyler-king/with": "dev-master"
-    }
-}
-```
-
-And run these two commands to install it:
-
-    $ curl -s http://getcomposer.org/installer | php
-    $ php composer.phar install
+    $ composer require ohmybrew/with
 
 ## Usage
 
@@ -78,10 +67,10 @@ class Foo
 }
 
 $foo = new Foo;
-TylerKing\with($foo, function($db) {
+OhMyBrew\with($foo, function($db) {
     $db->beginTransaction();
 
-    $foo = 'tyler-king';
+    $foo = 'ohmybrew';
     $sql = $db->prepare("INSERT INTO non_existant_table SET name = :foo");
     $sql->bindParam('foo', $foo, PDO::PARAM_STR);
     $sql->execute();

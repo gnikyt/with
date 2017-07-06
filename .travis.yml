@@ -2,9 +2,14 @@ language: php
 
 php:
   - 5.4
-  - 5.5
+  - 7.0
+  - 7.1
 
 before_script:
-  - composer install --dev --prefer-source
+  - composer install
+  - mkdir coverage
 
-script: bin/phpunit --coverage-text
+script: bin/phpunit
+
+after_script:
+  - php bin/coveralls -v
