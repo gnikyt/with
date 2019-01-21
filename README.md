@@ -103,8 +103,8 @@ exception
 
 ## Requirements
 
-- [PHP](http://php.net) >= 5.4.x
+- [PHP](http://php.net) >= 7
 
 ## Usage
 
-See `examples/` for some basic usage code.
+See `examples/` for some basic usage code or this README.
