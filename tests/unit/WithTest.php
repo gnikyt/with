@@ -2,10 +2,9 @@
 
 namespace OhMyBrew;
 
-use PHPUnit\Framework\TestCase;
 use Exception;
+use PHPUnit\Framework\TestCase;
 use StdClass;
-use OhMyBrew\Withable;
 
 class WithTest extends TestCase
 {

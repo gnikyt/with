@@ -3,13 +3,13 @@
 namespace OhMyBrew;
 
 use Exception;
-use OhMyBrew\Withable;
 
 /**
  * The Python-like "with" function.
  *
- * @param object $object The class object to use for "with".
+ * @param object   $object   The class object to use for "with".
  * @param callable $callable The callable action method performing the work.
+ *
  * @return object
  */
 function with($object, callable $callable)
