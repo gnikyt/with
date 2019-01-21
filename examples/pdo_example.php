@@ -2,14 +2,15 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-/**
-* In this example, with() will call Install()'s __enter method, which setups the PDO instance.
-* The PDO instance is then returned, where with() injects it into the callable function.
-* The callable function can then use PDO to run a transaction.
-* In this example, it will fail the transaction, where Install()'s __exit method automatically takes care of the rollback.
-**/
+use OhMyBrew\Withable;
 
-class Install
+/**
+ * In this example, with() will call Install()'s __enter method, which setups the PDO instance.
+ * The PDO instance is then returned, where with() injects it into the callable function.
+ * The callable function can then use PDO to run a transaction.
+ * In this example, it will fail the transaction, where Install()'s __exit method automatically takes care of the rollback.
+ **/
+class Install // implements Withable
 {
     private $config;
 
@@ -20,7 +21,7 @@ class Install
             'host'   => 'localhost',
             'user'   => null,
             'pass'   => null,
-            'db'     => null
+            'db'     => null,
         ], $config);
 
         return $this;
@@ -28,7 +29,7 @@ class Install
 
     protected function log($message)
     {
-        print $message.PHP_EOL;
+        echo $message.PHP_EOL;
     }
 
     public function __enter()
@@ -61,11 +62,11 @@ class Install
 }
 
 $test = new Install(['user' => 'root', 'pass' => 'root', 'db' => 'test']);
-OhMyBrew\with($test, function($pdo) {
+OhMyBrew\with($test, function ($pdo) {
     $pdo->beginTransaction();
 
-    $id  = 2;
-    $sql = $pdo->prepare("INSERT INTO non_existant_table SET id = :id");
+    $id = 2;
+    $sql = $pdo->prepare('INSERT INTO non_existant_table SET id = :id');
     $sql->bindParam('id', $id, PDO::PARAM_INT);
     $sql->execute();
 });

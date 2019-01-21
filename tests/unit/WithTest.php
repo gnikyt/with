@@ -1,6 +1,13 @@
-<?php namespace OhMyBrew;
+<?php
 
-class WithTest extends \PHPUnit_Framework_TestCase
+namespace OhMyBrew;
+
+use PHPUnit\Framework\TestCase;
+use Exception;
+use StdClass;
+use OhMyBrew\Withable;
+
+class WithTest extends TestCase
 {
     /**
      * @test
@@ -9,7 +16,7 @@ class WithTest extends \PHPUnit_Framework_TestCase
      *
      * This will test to make sure arg1 of with() is callable.
      */
-    function itShouldRejectForNoObject()
+    public function itShouldRejectForNoObject()
     {
         $something = 'something';
         with($something, function () {
@@ -24,9 +31,9 @@ class WithTest extends \PHPUnit_Framework_TestCase
      *
      * This will test to make sure arg1 of with() has a public __enter() method.
      */
-    function itShouldRejectObjectsWithoutEnterMethod()
+    public function itShouldRejectObjectsWithoutEnterMethod()
     {
-        $emptyObject = new \StdClass();
+        $emptyObject = new StdClass();
         with($emptyObject, function () {
             $this->fail('callable must not be called');
         });
@@ -39,7 +46,7 @@ class WithTest extends \PHPUnit_Framework_TestCase
      *
      * This will test to make sure arg1 of with() has a public __exit() method.
      */
-    function itShouldRejectObjectsWithoutExitMethod()
+    public function itShouldRejectObjectsWithoutExitMethod()
     {
         $enterObject = new EnterableStub();
         with($enterObject, function () {
@@ -52,13 +59,13 @@ class WithTest extends \PHPUnit_Framework_TestCase
      *
      * This will test to make sure with() successfully runs on a object having __enter() and __exit().
      */
-    function itShouldCallHookableMethods()
+    public function itShouldCallHookableMethods()
     {
-        $callableMock = $this->getMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke');
 
-        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter');
         $withObj->expects($this->once())
@@ -66,21 +73,21 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(true));
 
         with($withObj, $callableMock);
-   }
+    }
 
     /**
      * @test
      *
      * This will test to ensure __enter() passes its return to the callable.
      */
-    function itShouldPassEnterReturnValueToCallable()
+    public function itShouldPassEnterReturnValueToCallable()
     {
-        $callableMock = $this->getMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42);
 
-        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -96,14 +103,14 @@ class WithTest extends \PHPUnit_Framework_TestCase
      *
      * This will test to ensure __exit() gets a return value from __enter() via the callable.
      */
-    function itShouldPassExitGetReturnValueFromEnter()
+    public function itShouldPassExitGetReturnValueFromEnter()
     {
-        $callableMock = $this->getMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42);
 
-        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -112,7 +119,7 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->with(42, null)
                 ->will($this->returnValue(true));
 
-        with($withObj, $callableMock); 
+        with($withObj, $callableMock);
     }
 
     /**
@@ -122,17 +129,17 @@ class WithTest extends \PHPUnit_Framework_TestCase
      *
      * This will test to make sure the exception will be re-thrown if __exit() returns as false.
      */
-    function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionNotSuppressed()
+    public function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionNotSuppressed()
     {
-        $e = new \Exception('__exit() did not surpress me.');
+        $e = new Exception('__exit() did not surpress me.');
 
-        $callableMock = $this->getMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -141,7 +148,7 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->with(42, $e)
                 ->will($this->returnValue(false));
 
-        with($withObj, $callableMock); 
+        with($withObj, $callableMock);
     }
 
     /**
@@ -149,17 +156,17 @@ class WithTest extends \PHPUnit_Framework_TestCase
      *
      * This will test to make sure the exception will NOT be re-thrown if __exit() returns as true.
      */
-    function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionAndSuppress()
+    public function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionAndSuppress()
     {
-        $e = new \Exception;
+        $e = new Exception();
 
-        $callableMock = $this->getMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -168,7 +175,7 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->with(42, $e)
                 ->will($this->returnValue(true));
 
-        with($withObj, $callableMock); 
+        with($withObj, $callableMock);
     }
 
     /**
@@ -178,17 +185,17 @@ class WithTest extends \PHPUnit_Framework_TestCase
      *
      * This will test to make sure a boolean is returned from __exit() method.
      */
-    function itShouldCheckForBooleanTypeReturnedFromExitAndThrowException()
+    public function itShouldCheckForBooleanTypeReturnedFromExitAndThrowException()
     {
-        $e = new \Exception;
+        $e = new Exception();
 
-        $callableMock = $this->getMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -197,7 +204,7 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->with(42, $e)
                 ->will($this->returnValue(null));
 
-        with($withObj, $callableMock); 
+        with($withObj, $callableMock);
     }
 
     /**
@@ -206,15 +213,15 @@ class WithTest extends \PHPUnit_Framework_TestCase
      * This will test to ensure __enter() will throw an exception, skip the callable
      * but still call __exit() and pass that exception to it.
      */
-    function itShouldExceptionOnEnterAndSkipCallableButStillRunExit()
+    public function itShouldExceptionOnEnterAndSkipCallableButStillRunExit()
     {
-        $e = new \Exception;
+        $e = new Exception();
 
-        $callableMock = $this->getMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->never())
                      ->method('__invoke');
 
-        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->throwException($e));
@@ -223,9 +230,8 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->with(null, $e)
                 ->will($this->returnValue(true));
 
-        with($withObj, $callableMock); 
+        with($withObj, $callableMock);
     }
-
 
     /**
      * @test
@@ -234,15 +240,15 @@ class WithTest extends \PHPUnit_Framework_TestCase
      * This will test to ensure __enter() will throw an exception, skip the callable
      * but still call __exit() and pass that exception to it + rethrow it.
      */
-    function itShouldExceptionOnEnterAndSkipCallableButStillRunExitAndReThrow()
+    public function itShouldExceptionOnEnterAndSkipCallableButStillRunExitAndReThrow()
     {
-        $e = new \Exception;
+        $e = new Exception();
 
-        $callableMock = $this->getMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->never())
                      ->method('__invoke');
 
-        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->throwException($e));
@@ -251,23 +257,23 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->with(null, $e)
                 ->will($this->returnValue(false));
 
-        with($withObj, $callableMock); 
+        with($withObj, $callableMock);
     }
 
     /**
      * @test
      */
-    function completeTest()
+    public function completeTest()
     {
-        $e = new \Exception;
+        $e = new Exception();
 
-        $callableMock = $this->getMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('OhMyBrew\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->getMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -276,23 +282,67 @@ class WithTest extends \PHPUnit_Framework_TestCase
                 ->with(42, $e)
                 ->will($this->returnValue(true));
 
-        with($withObj, $callableMock); 
+        with($withObj, $callableMock);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBeAbleToImplementInterface()
+    {
+        $e = new Exception();
+
+        $callableMock = $this->createMock('OhMyBrew\CallableStub');
+        $callableMock->expects($this->once())
+                     ->method('__invoke')
+                     ->with(42)
+                     ->will($this->throwException($e));
+
+        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
+        $withObj->expects($this->once())
+                ->method('__enter')
+                ->will($this->returnValue(42));
+        $withObj->expects($this->once())
+                ->method('__exit')
+                ->with(42, $e)
+                ->will($this->returnValue(true));
+
+        with($withObj, $callableMock);
     }
 }
 
 class EnterableStub
 {
-    public function __enter() { }
+    public function __enter()
+    {
+    }
 }
 
 class CallableStub
 {
-    public function __invoke() { }
+    public function __invoke()
+    {
+    }
 }
 
 class WithObjectStub
 {
-    public function __enter() { }
+    public function __enter()
+    {
+    }
 
-    public function __exit() { }
+    public function __exit($enter, $error)
+    {
+    }
+}
+
+class InterfacedStub implements Withable
+{
+    public function __enter()
+    {
+    }
+
+    public function __exit($enter, $error)
+    {
+    }
 }

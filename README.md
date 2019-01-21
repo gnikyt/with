@@ -1,10 +1,10 @@
 # With
 
-This function simply mocks Python's [with statement](http://docs.python.org/release/2.5.3/ref/with.html) for PHP. 
-There is probably very little use-case for this but I thought I throw it out there.
+This function simply mocks Python's [with statement](http://docs.python.org/release/2.5.3/ref/with.html) for PHP.
 
 [![Build Status](https://secure.travis-ci.org/ohmybrew/with.png?branch=master)](http://travis-ci.org/ohmybrew/with)
 [![Coverage Status](https://coveralls.io/repos/github/ohmybrew/with/badge.svg?branch=master)](https://coveralls.io/github/ohmybrew/with?branch=master)
+[![StyleCI](https://styleci.io/repos/7547317/shield?branch=master)](https://styleci.io/repos/7547317)
 [![License](https://poser.pugx.org/ohmybrew/with/license)](https://packagist.org/packages/ohmybrew/with)
 
 ## Installation
@@ -77,6 +77,17 @@ OhMyBrew\with($foo, function($db) {
 });
 ```
 
+You're also free to implement the interface provided to ensure you're classes are compatible:
+
+```php
+use OhMyBrew\Withable;
+
+class Foo implements Withable
+{
+    // ...
+}
+```
+
 The above example is processed as follows:
 
 + `with` will call `$foo->__enter()`
@@ -92,7 +103,7 @@ exception
 
 ## Requirements
 
-- [PHP](http://php.net) 5.4.x
+- [PHP](http://php.net) >= 5.4.x
 
 ## Usage
 
