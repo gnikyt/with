@@ -1,5 +1,5 @@
 {
-    "name": "ohmybrew/with",
+    "name": "osiset/with",
     "type": "library",
     "description": "A Python with-statement clone for PHP.",
     "keywords": ["with", "python"],
@@ -19,8 +19,8 @@
     },
     "autoload": {
         "files": [
-            "src/OhMyBrew/With.php",
-            "src/OhMyBrew/Withable.php"
+            "src/Osiset/With.php",
+            "src/Osiset/Withable.php"
         ]
     },
     "config": { "bin-dir": "bin" }

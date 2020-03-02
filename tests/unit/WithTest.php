@@ -1,6 +1,6 @@
 <?php
 
-namespace OhMyBrew;
+namespace Osiset;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +41,7 @@ class WithTest extends TestCase
     /**
      * @test
      * @expectedException Exception
-     * @expectedExceptionMessage Class "OhMyBrew\EnterableStub" must have a public __exit() method.
+     * @expectedExceptionMessage Class "Osiset\EnterableStub" must have a public __exit() method.
      *
      * This will test to make sure arg1 of with() has a public __exit() method.
      */
@@ -60,11 +60,11 @@ class WithTest extends TestCase
      */
     public function itShouldCallHookableMethods()
     {
-        $callableMock = $this->createMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('Osiset\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke');
 
-        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('Osiset\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter');
         $withObj->expects($this->once())
@@ -81,12 +81,12 @@ class WithTest extends TestCase
      */
     public function itShouldPassEnterReturnValueToCallable()
     {
-        $callableMock = $this->createMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('Osiset\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42);
 
-        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('Osiset\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -104,12 +104,12 @@ class WithTest extends TestCase
      */
     public function itShouldPassExitGetReturnValueFromEnter()
     {
-        $callableMock = $this->createMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('Osiset\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42);
 
-        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('Osiset\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -132,13 +132,13 @@ class WithTest extends TestCase
     {
         $e = new Exception('__exit() did not surpress me.');
 
-        $callableMock = $this->createMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('Osiset\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('Osiset\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -159,13 +159,13 @@ class WithTest extends TestCase
     {
         $e = new Exception();
 
-        $callableMock = $this->createMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('Osiset\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('Osiset\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -188,13 +188,13 @@ class WithTest extends TestCase
     {
         $e = new Exception();
 
-        $callableMock = $this->createMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('Osiset\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('Osiset\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -216,11 +216,11 @@ class WithTest extends TestCase
     {
         $e = new Exception();
 
-        $callableMock = $this->createMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('Osiset\CallableStub');
         $callableMock->expects($this->never())
                      ->method('__invoke');
 
-        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('Osiset\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->throwException($e));
@@ -243,11 +243,11 @@ class WithTest extends TestCase
     {
         $e = new Exception();
 
-        $callableMock = $this->createMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('Osiset\CallableStub');
         $callableMock->expects($this->never())
                      ->method('__invoke');
 
-        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('Osiset\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->throwException($e));
@@ -266,13 +266,13 @@ class WithTest extends TestCase
     {
         $e = new Exception();
 
-        $callableMock = $this->createMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('Osiset\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('Osiset\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -291,13 +291,13 @@ class WithTest extends TestCase
     {
         $e = new Exception();
 
-        $callableMock = $this->createMock('OhMyBrew\CallableStub');
+        $callableMock = $this->createMock('Osiset\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->createMock('OhMyBrew\WithObjectStub');
+        $withObj = $this->createMock('Osiset\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));

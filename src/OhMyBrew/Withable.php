@@ -1,6 +1,6 @@
 <?php
 
-namespace OhMyBrew;
+namespace Osiset;
 
 /**
  * Withable interface for ensuring classes conform.

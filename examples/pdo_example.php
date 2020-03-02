@@ -2,7 +2,7 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-use OhMyBrew\Withable;
+use Osiset\Withable;
 
 /**
  * In this example, with() will call Install()'s __enter method, which setups the PDO instance.
@@ -62,7 +62,7 @@ class Install // implements Withable
 }
 
 $test = new Install(['user' => 'root', 'pass' => 'root', 'db' => 'test']);
-OhMyBrew\with($test, function ($pdo) {
+Osiset\with($test, function ($pdo) {
     $pdo->beginTransaction();
 
     $id = 2;

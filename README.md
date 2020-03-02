@@ -2,16 +2,16 @@
 
 This function simply mocks Python's [with statement](http://docs.python.org/release/2.5.3/ref/with.html) for PHP.
 
-[![Build Status](https://secure.travis-ci.org/ohmybrew/with.png?branch=master)](http://travis-ci.org/ohmybrew/with)
-[![Coverage Status](https://coveralls.io/repos/github/ohmybrew/with/badge.svg?branch=master)](https://coveralls.io/github/ohmybrew/with?branch=master)
+[![Build Status](https://secure.travis-ci.org/osiset/with.png?branch=master)](http://travis-ci.org/osiset/with)
+[![Coverage Status](https://coveralls.io/repos/github/osiset/with/badge.svg?branch=master)](https://coveralls.io/github/osiset/with?branch=master)
 [![StyleCI](https://styleci.io/repos/7547317/shield?branch=master)](https://styleci.io/repos/7547317)
-[![License](https://poser.pugx.org/ohmybrew/with/license)](https://packagist.org/packages/ohmybrew/with)
+[![License](https://poser.pugx.org/osiset/with/license)](https://packagist.org/packages/osiset/with)
 
 ## Installation
 
 The recommended way to install is [through composer](http://packagist.org).
 
-    $ composer require ohmybrew/with
+    $ composer require osiset/with
 
 ## Usage
 
@@ -67,10 +67,10 @@ class Foo
 }
 
 $foo = new Foo;
-OhMyBrew\with($foo, function($db) {
+Osiset\with($foo, function($db) {
     $db->beginTransaction();
 
-    $foo = 'ohmybrew';
+    $foo = 'osiset';
     $sql = $db->prepare("INSERT INTO non_existant_table SET name = :foo");
     $sql->bindParam('foo', $foo, PDO::PARAM_STR);
     $sql->execute();
@@ -80,7 +80,7 @@ OhMyBrew\with($foo, function($db) {
 You're also free to implement the interface provided to ensure you're classes are compatible:
 
 ```php
-use OhMyBrew\Withable;
+use Osiset\Withable;
 
 class Foo implements Withable
 {
