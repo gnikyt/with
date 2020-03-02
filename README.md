@@ -11,7 +11,7 @@ This function simply mocks Python's [with statement](http://docs.python.org/rele
 
 The recommended way to install is [through composer](http://packagist.org).
 
-    $ composer require osiset/with
+    composer require osiset/with
 
 ## Usage
 
