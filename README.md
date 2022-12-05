@@ -2,16 +2,15 @@
 
 This function simply mocks Python's [with statement](http://docs.python.org/release/2.5.3/ref/with.html) for PHP.
 
-[![Build Status](https://secure.travis-ci.org/osiset/with.png?branch=master)](http://travis-ci.org/osiset/with)
-[![Coverage Status](https://coveralls.io/repos/github/osiset/with/badge.svg?branch=master)](https://coveralls.io/github/osiset/with?branch=master)
-[![StyleCI](https://styleci.io/repos/7547317/shield?branch=master)](https://styleci.io/repos/7547317)
-[![License](https://poser.pugx.org/osiset/with/license)](https://packagist.org/packages/osiset/with)
+![Tests](https://github.com/gnikyt/with/workflows/Package%20Test/badge.svg?branch=master)
+[![codecov](https://codecov.io/gh/gnikyt/with/branch/master/graph/badge.svg?token=qqUuLItqJj)](https://codecov.io/gh/gnikyt/with)
+[![License](https://poser.pugx.org/gnikyt/with/license)](https://packagist.org/packages/gnikyt/with)
 
 ## Installation
 
 The recommended way to install is [through composer](http://packagist.org).
 
-    composer require osiset/with
+    composer require gnikyt/with
 
 ## Usage
 
@@ -67,7 +66,7 @@ class Foo
 }
 
 $foo = new Foo;
-Osiset\with($foo, function($db) {
+Gnikyt\with($foo, function($db) {
     $db->beginTransaction();
 
     $foo = 'osiset';
@@ -80,7 +79,7 @@ Osiset\with($foo, function($db) {
 You're also free to implement the interface provided to ensure you're classes are compatible:
 
 ```php
-use Osiset\Withable;
+use Gnikyt\Withable;
 
 class Foo implements Withable
 {
@@ -103,7 +102,7 @@ exception
 
 ## Requirements
 
-- [PHP](http://php.net) >= 7
+- [PHP](http://php.net) >= 8
 
 ## Usage
 
