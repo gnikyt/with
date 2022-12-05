@@ -35,9 +35,6 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: Normalize composer file
-        run: composer normalize --dry-run
-
       - name: Run test suite
         run: vendor/bin/phpunit -v
 
