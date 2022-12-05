@@ -2,3 +2,4 @@ composer.lock
 bin/
 vendor/
 coverage/
+.phpunit.result.cache

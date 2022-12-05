@@ -1,6 +1,6 @@
 <?php
 
-namespace Osiset;
+namespace Gnikyt;
 
 /**
  * Withable interface for ensuring classes conform.
