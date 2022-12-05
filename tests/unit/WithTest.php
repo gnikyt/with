@@ -1,6 +1,6 @@
 <?php
 
-namespace Osiset;
+namespace Gnikyt;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -9,14 +9,13 @@ use StdClass;
 class WithTest extends TestCase
 {
     /**
-     * @test
-     * @expectedException Exception
-     * @expectedExceptionMessage "something" must be a callable object.
-     *
      * This will test to make sure arg1 of with() is callable.
      */
-    public function itShouldRejectForNoObject()
+    public function testItShouldRejectForNoObject()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('"something" must be a callable object');
+
         $something = 'something';
         with($something, function () {
             $this->fail('callable must not be called');
@@ -24,14 +23,13 @@ class WithTest extends TestCase
     }
 
     /**
-     * @test
-     * @expectedException Exception
-     * @expectedExceptionMessage Class "stdClass" must have a public __enter() method.
-     *
      * This will test to make sure arg1 of with() has a public __enter() method.
      */
-    public function itShouldRejectObjectsWithoutEnterMethod()
+    public function testItShouldRejectObjectsWithoutEnterMethod()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Class "stdClass" must have a public __enter() method.');
+
         $emptyObject = new StdClass();
         with($emptyObject, function () {
             $this->fail('callable must not be called');
@@ -39,14 +37,13 @@ class WithTest extends TestCase
     }
 
     /**
-     * @test
-     * @expectedException Exception
-     * @expectedExceptionMessage Class "Osiset\EnterableStub" must have a public __exit() method.
-     *
      * This will test to make sure arg1 of with() has a public __exit() method.
      */
-    public function itShouldRejectObjectsWithoutExitMethod()
+    public function testItShouldRejectObjectsWithoutExitMethod()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Class "Gnikyt\EnterableStub" must have a public __exit() method.');
+
         $enterObject = new EnterableStub();
         with($enterObject, function () {
             $this->fail('callable must not be called');
@@ -54,17 +51,15 @@ class WithTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * This will test to make sure with() successfully runs on a object having __enter() and __exit().
      */
-    public function itShouldCallHookableMethods()
+    public function testItShouldCallHookableMethods()
     {
-        $callableMock = $this->createMock('Osiset\CallableStub');
+        $callableMock = $this->createMock('Gnikyt\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke');
 
-        $withObj = $this->createMock('Osiset\WithObjectStub');
+        $withObj = $this->createMock('Gnikyt\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter');
         $withObj->expects($this->once())
@@ -75,18 +70,16 @@ class WithTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * This will test to ensure __enter() passes its return to the callable.
      */
-    public function itShouldPassEnterReturnValueToCallable()
+    public function testItShouldPassEnterReturnValueToCallable()
     {
-        $callableMock = $this->createMock('Osiset\CallableStub');
+        $callableMock = $this->createMock('Gnikyt\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42);
 
-        $withObj = $this->createMock('Osiset\WithObjectStub');
+        $withObj = $this->createMock('Gnikyt\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -98,18 +91,16 @@ class WithTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * This will test to ensure __exit() gets a return value from __enter() via the callable.
      */
-    public function itShouldPassExitGetReturnValueFromEnter()
+    public function testItShouldPassExitGetReturnValueFromEnter()
     {
-        $callableMock = $this->createMock('Osiset\CallableStub');
+        $callableMock = $this->createMock('Gnikyt\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42);
 
-        $withObj = $this->createMock('Osiset\WithObjectStub');
+        $withObj = $this->createMock('Gnikyt\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -122,23 +113,22 @@ class WithTest extends TestCase
     }
 
     /**
-     * @test
-     * @expectedException Exception
-     * @expectedExceptionMessage __exit() did not surpress me.
-     *
      * This will test to make sure the exception will be re-thrown if __exit() returns as false.
      */
-    public function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionNotSuppressed()
+    public function testItShouldPassExitGetReturnValueFromEnterAndMakeExceptionNotSuppressed()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('__exit() did not surpress me.');
+
         $e = new Exception('__exit() did not surpress me.');
 
-        $callableMock = $this->createMock('Osiset\CallableStub');
+        $callableMock = $this->createMock('Gnikyt\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->createMock('Osiset\WithObjectStub');
+        $withObj = $this->createMock('Gnikyt\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -151,21 +141,19 @@ class WithTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * This will test to make sure the exception will NOT be re-thrown if __exit() returns as true.
      */
-    public function itShouldPassExitGetReturnValueFromEnterAndMakeExceptionAndSuppress()
+    public function testItShouldPassExitGetReturnValueFromEnterAndMakeExceptionAndSuppress()
     {
         $e = new Exception();
 
-        $callableMock = $this->createMock('Osiset\CallableStub');
+        $callableMock = $this->createMock('Gnikyt\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->createMock('Osiset\WithObjectStub');
+        $withObj = $this->createMock('Gnikyt\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -184,17 +172,20 @@ class WithTest extends TestCase
      *
      * This will test to make sure a boolean is returned from __exit() method.
      */
-    public function itShouldCheckForBooleanTypeReturnedFromExitAndThrowException()
+    public function testItShouldCheckForBooleanTypeReturnedFromExitAndThrowException()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('__exit() method must return a boolean.');
+
         $e = new Exception();
 
-        $callableMock = $this->createMock('Osiset\CallableStub');
+        $callableMock = $this->createMock('Gnikyt\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->createMock('Osiset\WithObjectStub');
+        $withObj = $this->createMock('Gnikyt\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -207,20 +198,18 @@ class WithTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * This will test to ensure __enter() will throw an exception, skip the callable
      * but still call __exit() and pass that exception to it.
      */
-    public function itShouldExceptionOnEnterAndSkipCallableButStillRunExit()
+    public function testItShouldExceptionOnEnterAndSkipCallableButStillRunExit()
     {
         $e = new Exception();
 
-        $callableMock = $this->createMock('Osiset\CallableStub');
+        $callableMock = $this->createMock('Gnikyt\CallableStub');
         $callableMock->expects($this->never())
                      ->method('__invoke');
 
-        $withObj = $this->createMock('Osiset\WithObjectStub');
+        $withObj = $this->createMock('Gnikyt\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->throwException($e));
@@ -233,21 +222,20 @@ class WithTest extends TestCase
     }
 
     /**
-     * @test
-     * @expectedException Exception
-     *
      * This will test to ensure __enter() will throw an exception, skip the callable
      * but still call __exit() and pass that exception to it + rethrow it.
      */
-    public function itShouldExceptionOnEnterAndSkipCallableButStillRunExitAndReThrow()
+    public function testItShouldExceptionOnEnterAndSkipCallableButStillRunExitAndReThrow()
     {
+        $this->expectException(Exception::class);
+
         $e = new Exception();
 
-        $callableMock = $this->createMock('Osiset\CallableStub');
+        $callableMock = $this->createMock('Gnikyt\CallableStub');
         $callableMock->expects($this->never())
                      ->method('__invoke');
 
-        $withObj = $this->createMock('Osiset\WithObjectStub');
+        $withObj = $this->createMock('Gnikyt\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->throwException($e));
@@ -260,19 +248,19 @@ class WithTest extends TestCase
     }
 
     /**
-     * @test
+     * Complete test.
      */
-    public function completeTest()
+    public function testComplete()
     {
         $e = new Exception();
 
-        $callableMock = $this->createMock('Osiset\CallableStub');
+        $callableMock = $this->createMock('Gnikyt\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->createMock('Osiset\WithObjectStub');
+        $withObj = $this->createMock('Gnikyt\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
@@ -285,19 +273,19 @@ class WithTest extends TestCase
     }
 
     /**
-     * @test
+     * Test implementation.
      */
-    public function itShouldBeAbleToImplementInterface()
+    public function testItShouldBeAbleToImplementInterface()
     {
         $e = new Exception();
 
-        $callableMock = $this->createMock('Osiset\CallableStub');
+        $callableMock = $this->createMock('Gnikyt\CallableStub');
         $callableMock->expects($this->once())
                      ->method('__invoke')
                      ->with(42)
                      ->will($this->throwException($e));
 
-        $withObj = $this->createMock('Osiset\WithObjectStub');
+        $withObj = $this->createMock('Gnikyt\WithObjectStub');
         $withObj->expects($this->once())
                 ->method('__enter')
                 ->will($this->returnValue(42));
