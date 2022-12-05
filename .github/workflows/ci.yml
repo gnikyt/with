@@ -36,10 +36,10 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Run test suite
-        run: vendor/bin/phpunit -v
+        run: bin/phpunit -v
 
       - name: Run static code analysis
-        run: vendor/bin/phpstan --memory-limit=-1
+        run: bin/phpstan --memory-limit=-1
 
       - name: Upload coverage results
         uses: codecov/codecov-action@v1
