@@ -38,8 +38,5 @@ jobs:
       - name: Run test suite
         run: bin/phpunit -v
 
-      - name: Run static code analysis
-        run: bin/phpstan --memory-limit=-1
-
       - name: Upload coverage results
         uses: codecov/codecov-action@v1
