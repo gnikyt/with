@@ -1,5 +1,5 @@
 {
-    "name": "osiset/with",
+    "name": "gnikyt/with",
     "type": "library",
     "description": "A Python with-statement clone for PHP.",
     "keywords": ["with", "python"],
@@ -7,7 +7,7 @@
     "authors": [
         {
             "name": "Tyler King",
-            "email": "tyler@osiset.com"
+            "email": "tyler.n.king@gmail.com"
         }
     ],
     "require": {
@@ -19,8 +19,8 @@
     },
     "autoload": {
         "files": [
-            "src/Osiset/With.php",
-            "src/Osiset/Withable.php"
+            "src/Gnikyt/With.php",
+            "src/Gnikyt/Withable.php"
         ]
     },
     "config": { "bin-dir": "bin" }
